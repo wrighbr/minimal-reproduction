@@ -1,0 +1,26 @@
+---
+helmDefaults:
+  atomic: true
+  wait: true
+
+repositories:
+  - name: bitnami
+    url: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+
+environments:
+  build-component-test: {}
+  preview-component-test: {}
+
+---
+templates:
+  build: &build-test
+    namespace: test-namespace
+
+releases:
+  - name: db
+    <<: *{{ .Environment.Name }}
+    chart: bitnami/postgresql
+    version: 8.6.13
+    valuesPathPrefix: ./config/component-test/
+    values:
+      - values-db.yaml
